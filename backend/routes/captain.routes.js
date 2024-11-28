@@ -24,4 +24,7 @@ router.post('/login', [
 //get captain by id api
 router.get('/profile', authCaptain ,captainController.getCaptainProfile);
 
+//logout captain api
+router.get('/logout', authCaptain, captainController.logoutCaptain);
+
 module.exports = router;

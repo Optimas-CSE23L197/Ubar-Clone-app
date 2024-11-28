@@ -211,3 +211,28 @@ This endpoint allows authenticated captains to retrieve their profile informatio
 }
 ```
 
+# Captain Logout Endpoint
+
+## `/captain/logout`
+
+This endpoint allows authenticated captains (drivers) to log out by invalidating their session token.
+
+### **Request:**
+
+- **Method:** `GET`
+- **URL:** `/captain/logout`
+- **Headers:**
+  - **Authorization:** `Bearer <token>`
+
+### **Response:**
+
+- **Status:** `200 OK`
+- **Body:** JSON object confirming successful logout.
+
+**Example Response:**
+```json
+{
+  "message": "Successfully logged out"
+}
+```
+
