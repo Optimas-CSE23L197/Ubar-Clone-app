@@ -55,3 +55,55 @@ The request body must be in JSON format and contain the following fields:
   "password": "password123"
 }
 ```
+
+## `/user/profile` Endpoint
+
+This endpoint allows authenticated users to retrieve their profile information.
+
+### **Request:**
+
+- **Method:** `GET`
+- **URL:** `/user/profile`
+- **Headers:**
+  - **Authorization:** `Bearer <token>`
+
+### **Response:**
+
+- **Status:** `200 OK`
+- **Body:** JSON object containing the user's profile information.
+
+**Example Response:**
+  ```json
+  {
+  "fullname": {
+    "firstname": "test_name",
+    "lastname": "test_lastname"
+  },
+  "_id": "67xxecxx1681e6xx88421xxx",
+  "email": "test@gmail.com",
+  "__v": 0
+}
+```
+
+## `/user/logout` Endpoint
+
+This endpoint allows authenticated users to log out by invalidating their session token.
+
+### **Request:**
+
+- **Method:** `GET`
+- **URL:** `/user/logout`
+- **Headers:**
+  - **Authorization:** `Bearer <token>`
+
+### **Response:**
+
+- **Status:** `200 OK`
+- **Body:** JSON object confirming successful logout.
+
+**Example Response:**
+```json
+{
+  "message": "Successfully logged out"
+}
+```

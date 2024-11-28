@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model');
 const userService = require('../services/user.service');
 const {validationResult} = require('express-validator');
+const blacklistTokenModel = require('../models/blacklistToken.model');
 
 
 //register user
@@ -67,8 +68,31 @@ module.exports.loginUser = async (req,res,next) => {
 
     const token = user.generateAuthToken();
     res.status(200).json({
-        token,user
+        token, user
     })
 }
+
+//get user profile
+module.exports.getUserProfile = async (req,res,next) => {
+    //send the user data to frontend
+    res.status(200).json(req.user)   
+}
+
+//logout user
+module.exports.logoutUser = async (req,res,next) => {
+    res.clearCookie('token');
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+
+    await blacklistTokenModel.create({
+        token
+    })
+
+    res.status(200).json({
+        message: 'Logged out successfully',
+        success: true
+    })
+}
+
+//TTL:- Time to live used for the token or we can say the time for which the token is valid is called TTL
 
 
