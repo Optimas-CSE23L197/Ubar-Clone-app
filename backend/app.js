@@ -2,12 +2,21 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const express = require('express')
 const app = express()
+const userRoute = require('./routes/user.routes')
 
-app.use(cors())
+const connectDB = require('./config/db');
+connectDB();
+
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req,res)=> {
     res.send('hello world')
 });
+
+app.use('/user', userRoute);
 
 
 module.exports = app
