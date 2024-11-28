@@ -29,7 +29,6 @@ The request body must be in JSON format and contain the following fields:
   },
   "password": "password123"
 }
-
 ```
 
 ## `/user/login` Endpoint
@@ -105,5 +104,49 @@ This endpoint allows authenticated users to log out by invalidating their sessio
 ```json
 {
   "message": "Successfully logged out"
+}
+```
+
+# Captain Registration Endpoint
+
+## `/captain/register`
+
+This endpoint allows new captains (drivers) to register by providing necessary details such as their full name, email, password, and vehicle information. Upon successful registration, a JSON Web Token (JWT) is generated and returned.
+
+### **Request:**
+
+- **Method:** `POST`
+- **URL:** `/captain/register`
+
+#### **Request Body:**
+
+The request body must be in JSON format and contain the following fields:
+
+- **email**: (string) The captain's email address. Must be a valid email.
+- **fullname**: (object) Contains the captain's full name.
+  - **firstname**: (string) The captain's first name. Must be at least 3 characters long.
+  - **lastname**: (string) The captain's last name.
+- **password**: (string) The captain's password. Must be at least 6 characters long.
+- **vehicle**: (object) Contains the vehicle information.
+  - **color**: (string) Vehicle color. Must be at least 3 characters long.
+  - **plate**: (string) Vehicle plate number. Must be at least 3 characters long.
+  - **capacity**: (number) Vehicle passenger capacity. Must be at least 1.
+  - **typeVehicle**: (string) Type of vehicle. Must be either 'car', 'motorcycle', or 'auto'.
+
+**Example Request Body:**
+```json
+{
+  "email": "captain@domain.com",
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "password": "securepassword",
+  "vehicle": {
+    "color": "red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "typeVehicle": "car"
+  }
 }
 ```
