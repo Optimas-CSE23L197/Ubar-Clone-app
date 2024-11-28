@@ -150,3 +150,64 @@ The request body must be in JSON format and contain the following fields:
   }
 }
 ```
+
+# Captain Login Endpoint
+
+## `/captain/login`
+
+This endpoint allows existing captains (drivers) to log in by providing their email and password. Upon successful authentication, a JSON Web Token (JWT) is generated and returned.
+
+### **Request:**
+
+- **Method:** `POST`
+- **URL:** `/captain/login`
+
+#### **Request Body:**
+
+The request body must be in JSON format and contain the following fields:
+
+- **email**: (string) The captain's email address. Must be a valid email.
+- **password**: (string) The captain's password. Must be at least 6 characters long.
+
+**Example Request Body:**
+```json
+{
+  "email": "captain@domain.com",
+  "password": "securepassword"
+}
+```
+
+## `/captain/profile` Endpoint
+
+This endpoint allows authenticated captains to retrieve their profile information, including vehicle details and current status.
+
+### **Request:**
+
+- **Method:** `GET`
+- **URL:** `/captain/profile`
+- **Headers:**
+  - **Authorization:** `Bearer <token>`
+
+### **Response:**
+
+- **Status:** `200 OK`
+- **Body:** JSON object containing the captain's profile information.
+
+**Example Response:**
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "captain@domain.com",
+  "vehicle": {
+    "color": "red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "typeVehicle": "car"
+  },
+  "status": "active"
+}
+```
+

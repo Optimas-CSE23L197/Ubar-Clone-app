@@ -41,3 +41,47 @@ module.exports.registerCaptain = async (req,res,next) => {
         token, newCaptain
     })
 }
+
+//login for captain or driver
+module.exports.loginCaptain = async (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()) {
+        return res.status(400).json({
+            errors: error.array()
+        })
+    }
+
+    const {email,password} = req.body;
+    if(!email || !password) {
+        return res.status(400).json({
+            message: 'all filed are required'
+        })
+    }
+
+    const captain = await captainModel.findOne({
+        email
+    }).select('+password');
+    if(!captain) {
+        return res.status(400).json({
+            message: 'invalid email or password'
+        })
+    }
+
+    const isPasswordMatch = await captain.comparePassword(password);
+    if(!isPasswordMatch) {
+        return res.status(400).json({
+            message: 'invalid email or password'
+        })
+    }
+
+    const token = captain.generateAuthToken();
+    res.cookie('token', token);
+    res.status(200).json({
+        token,captain
+    })
+}
+
+//profile for captain or driver
+module.exports.getCaptainProfile = async (req,res,next) => {
+    res.status(200).json(req.captain);
+}
