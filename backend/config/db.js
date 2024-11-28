@@ -1,5 +1,6 @@
 const mongose = require('mongoose')
 
+//connect to the database
 function connectDB() {
     mongose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true, //Ensures Mongoose uses the new connection string parser

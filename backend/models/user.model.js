@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+//create user schema
 const userSchema = new mongoose.Schema({
     fullname: {
         firstname: {
@@ -30,18 +31,25 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+
+//generate token for the user
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET)
     return token
 }
 
+//take the user password and compare it with the hashed password
 userSchema.methods.comparePassword = async function(password) {
-    return await bcrypt.compare(password, 10)
+    return bcrypt.compare(password, this.password)
 }
 
+//hash the user password
 userSchema.statics.hashPassword = async function(password) {
-    return await bcrypt.hash(password,10)
+    return await bcrypt.hash(password, 10)
 }
 
+//create user model
 const userModel = mongoose.model('user', userSchema);
+
+//export user model
 module.exports = userModel
