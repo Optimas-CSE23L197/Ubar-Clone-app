@@ -1,12 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { CaptainDataContext } from '../context/CaptainContext';
 
 const CaptainLogin = () => {
-  const handleLogin = (e) => {
+  const {captain,setCaptain} = useContext(CaptainDataContext);
+  const navigate = useNavigate();
+  const [captainLoginInfo, setCaptainLoginInfo] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle captain login logic
-    console.log("Captain login submitted");
+    const {email,password} = captainLoginInfo; //Destructure email and password from captainLoginInfo.
+    
+    try {
+      const url = 'http://localhost:4000/captain/login';
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }, body: JSON.stringify(captainLoginInfo)
+      })
+      const result = await response.json();
+      if(response.ok){
+        navigate('/captain/home');
+        localStorage.setItem('token', result.token);
+        setCaptain(result);
+      } else {
+        console.log("Error during login",result);
+      }
+    } catch(error) {
+      console.error("Error during login",error);
+    }
   };
+
+  const handleChange = (e) => {
+    const {name,value} = e.target; // Destructure name and value from the input field. Desctructuring is a way to extract multiple values from data stored in objects and arrays.
+    const copyCaptainLoginInfo = {...captainLoginInfo}; //{...captainLoginInfo} is a way to create a new object with the same properties as captainLoginInfo. This is done to avoid directly mutating the state.
+    copyCaptainLoginInfo[name] = value; //copyCaptainLoginInfo[name] is a way to dynamically set the property of the object. This is done to avoid directly mutating the state.
+    setCaptainLoginInfo(copyCaptainLoginInfo); //setCaptainLoginInfo is a function that is used to update the state of captainLoginInfo.
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -19,6 +53,7 @@ const CaptainLogin = () => {
               type="email"
               id="email"
               name="email"
+              onChange={handleChange}
               placeholder="Enter your email"
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
@@ -30,6 +65,7 @@ const CaptainLogin = () => {
               type="password"
               id="password"
               name="password"
+              onChange={handleChange}
               placeholder="Enter your password"
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
