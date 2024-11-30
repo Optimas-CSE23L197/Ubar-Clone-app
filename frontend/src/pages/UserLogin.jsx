@@ -1,12 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { userDataContext } from '../context/UserContext';
+
 
 const UserLogin = () => {
-  const handleLogin = (e) => {
+    const navigate = useNavigate();
+    const {user, setUser} = useContext(userDataContext);
+
+    const [userLoginInfo, setUserLoginInfo] = useState({
+        email: '',
+        password: ''
+    })
+
+const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle login logic
-    console.log("Login submitted");
-  };
+    const {email,password} = userLoginInfo;
+
+    try {
+        const url = 'http://localhost:4000/user/login';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify(userLoginInfo) 
+        })
+        const result = await response.json();
+        if(response.ok){
+            navigate('/home');
+            localStorage.setItem('token', result.token);
+            setUser(result);
+        }
+    } catch(error) {
+        console.error(error);
+    }
+};
+
+  const handleChange = (e) => {
+    const {name,value} = e.target;
+    const copyUserLoginInfo = {...userLoginInfo};
+    copyUserLoginInfo[name] = value;
+    setUserLoginInfo(copyUserLoginInfo);
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -19,6 +53,7 @@ const UserLogin = () => {
               type="email"
               id="email"
               name="email"
+              onChange={handleChange}
               placeholder="Enter your email"
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
@@ -30,6 +65,7 @@ const UserLogin = () => {
               type="password"
               id="password"
               name="password"
+              onChange={handleChange}
               placeholder="Enter your password"
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
