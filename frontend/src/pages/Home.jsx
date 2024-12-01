@@ -35,7 +35,7 @@ function Home() {
       <div
         onClick={handleLocationClick} 
         className='h-screen w-screen object-cover'>
-        <img className='h-full w-full object-cover' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjgBWkh-2RpEXtRmA1vxakcVsTzG3XVMnd3Q&s" alt="Background" />
+        <img className='h-full w-full object-cover' src="https://www.medianama.com/wp-content/uploads/2018/06/Screenshot_20180619-112715.png.png" alt="Background" />
       </div>
 
       <div className='flex flex-col justify-end h-screen absolute bottom-0 w-full rounded-md'>
