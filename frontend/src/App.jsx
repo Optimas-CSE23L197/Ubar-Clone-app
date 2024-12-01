@@ -11,6 +11,7 @@ import CaptainLogout from './pages/CaptainLogout'
 import UserLogout from './pages/UserLogout'
 import CaptainHome from './pages/CaptainHome'
 import CaptainProtectionWrapper from './pages/CaptainProtectionWrapper'
+import DriverConfirmPage from './components/DriverConfirmPage'
 
 
 function App() {
@@ -38,6 +39,10 @@ function App() {
           <CaptainHome />
         </CaptainProtectionWrapper>
       } />
+
+
+      {/* booking confirm page */}
+      <Route path='/booking/confirm' element={<DriverConfirmPage />} />
     </Routes>
   )
 }
